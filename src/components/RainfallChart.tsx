@@ -30,7 +30,7 @@ export function RainfallChart({ data }: RainfallChartProps) {
       <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Rainfall — 24h
       </h3>
-      <div className="h-[260px]">
+      <div className="h-[200px] sm:h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
             <defs>
