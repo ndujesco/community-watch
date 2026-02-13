@@ -12,12 +12,12 @@ export function StationGrid({ stations }: StationGridProps) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="rounded-lg border border-border bg-card p-5"
+      className="rounded-lg border border-border bg-card p-3 sm:p-5"
     >
-      <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:mb-4 sm:text-sm">
         Sensor Stations
       </h3>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
         {stations.map((s) => (
           <div
             key={s.id}

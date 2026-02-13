@@ -28,34 +28,34 @@ const Index = () => {
         : "safe";
 
   return (
-    <div className="min-h-screen bg-background px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <header className="mb-6 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15">
-            <Activity className="h-5 w-5 text-primary" />
+        <header className="mb-4 flex flex-wrap items-center gap-2 sm:mb-6 sm:gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 sm:h-10 sm:w-10">
+            <Activity className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">FloodWatch Community Monitor</h1>
-            <p className="text-xs text-muted-foreground">
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-base font-bold text-foreground sm:text-xl">FloodWatch Community Monitor</h1>
+            <p className="text-[10px] text-muted-foreground sm:text-xs">
               Real-time IoT weather & flood early-warning system
             </p>
           </div>
-          <div className="ml-auto text-right">
-            <p className="text-mono text-xs text-muted-foreground">
+          <div className="w-full text-left sm:ml-auto sm:w-auto sm:text-right">
+            <p className="text-mono text-[10px] text-muted-foreground sm:text-xs">
               {new Date().toLocaleDateString()} · {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
             </p>
-            <p className="text-xs text-muted-foreground">{stations.filter((s) => s.status === "online").length}/{stations.length} stations online</p>
+            <p className="text-[10px] text-muted-foreground sm:text-xs">{stations.filter((s) => s.status === "online").length}/{stations.length} stations online</p>
           </div>
         </header>
 
         {/* Alert Banner */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <AlertBanner level={overallAlert} />
         </div>
 
         {/* Metrics Grid */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="mb-4 grid grid-cols-2 gap-2 sm:mb-6 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
           <MetricCard
             label="Water Level"
             value={currentReading.waterLevel.toFixed(1)}
@@ -99,13 +99,13 @@ const Index = () => {
         </div>
 
         {/* Charts */}
-        <div className="mb-6 grid gap-6 lg:grid-cols-2">
+        <div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
           <WaterLevelChart data={weatherData} />
           <RainfallChart data={weatherData} />
         </div>
 
         {/* Stations & Alerts */}
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
           <StationGrid stations={stations} />
           <AlertFeed alerts={recentAlerts} />
         </div>

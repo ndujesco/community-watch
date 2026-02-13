@@ -35,12 +35,12 @@ export function AlertBanner({ level }: AlertBannerProps) {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className={`flex items-center gap-4 rounded-lg border px-6 py-4 ${style}`}
+      className={`flex items-center gap-3 rounded-lg border px-4 py-3 sm:gap-4 sm:px-6 sm:py-4 ${style}`}
     >
-      <Icon className="h-7 w-7 flex-shrink-0" />
-      <div>
-        <h2 className="text-lg font-bold">{label}</h2>
-        <p className="text-sm opacity-80">{desc}</p>
+      <Icon className="h-5 w-5 flex-shrink-0 sm:h-7 sm:w-7" />
+      <div className="min-w-0">
+        <h2 className="text-sm font-bold sm:text-lg">{label}</h2>
+        <p className="text-xs opacity-80 sm:text-sm">{desc}</p>
       </div>
     </motion.div>
   );
