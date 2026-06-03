@@ -39,7 +39,7 @@ export default function History() {
       "tflood", "capacity_pct", "classification", "temperature", "pressure", "humidity",
     ];
     const rows = table.data.map((r) =>
-      cols.map((c) => (r as Record<string, unknown>)[c] ?? "").join(","),
+      cols.map((c) => (r as unknown as Record<string, unknown>)[c] ?? "").join(","),
     );
     const csv = [cols.join(","), ...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
