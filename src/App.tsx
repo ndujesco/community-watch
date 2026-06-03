@@ -12,6 +12,7 @@ import Alerts from "./pages/Alerts";
 import History from "./pages/History";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import PublicStatus from "./pages/PublicStatus";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -31,6 +32,8 @@ const App = () => (
       <BrowserRouter>
         <RealtimeProvider>
           <Routes>
+            {/* Public, full-screen plain-language page for residents */}
+            <Route path="/status" element={<PublicStatus />} />
             <Route element={<AppLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/stations" element={<Stations />} />
