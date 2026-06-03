@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# FloodWatch Web — IoT Flood Early-Warning Dashboard
 
-## Project info
+React + TypeScript + Vite dashboard for the IoT Flood Early-Warning System.
+Visualises real-time sensor readings, site-specific flood risk, time-to-flood
+projections, historical trends, the rainfall→water-level relationship, station
+health, and the CAP alert log. Talks to the FastAPI backend over REST and a
+WebSocket (with automatic polling fallback).
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Pages
 
-## How can I edit this code?
+| Route | Purpose |
+|-------|---------|
+| `/` | Live dashboard — network status, per-site risk, focused-site metrics & charts |
+| `/stations` · `/stations/:id` | Station fleet health, battery, RF link; per-node detail & charts |
+| `/alerts` | Filterable CAP alert log with acknowledge + CAP detail dialog |
+| `/history` | Time-range explorer: water level / rainfall / dH/dt charts + table + CSV export |
+| `/analytics` | Rainfall→dH/dt scatter, fitted α, classification mix, cross-site comparison |
+| `/settings` | Site threshold calibration + SMS/push subscriber management |
 
-There are several ways of editing your application.
+## Develop
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+cd community-watch-web
+npm install
+npm run dev        # http://localhost:8080
 ```
 
-**Edit a file directly in GitHub**
+The backend must be running (see `../community-watch-server`). Configure the API
+endpoint via `.env`:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+VITE_API_URL=http://localhost:8000
+# VITE_WS_URL is derived from VITE_API_URL if omitted
+```
 
-**Use GitHub Codespaces**
+## Build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run build      # type-checks and bundles to dist/
+npm run preview    # preview the production build
+```
 
-## What technologies are used for this project?
+## Real-time
 
-This project is built with:
+`src/hooks/use-realtime.tsx` opens a WebSocket to the backend, reconnects with
+backoff, and invalidates React Query caches on `reading` / `alert` messages.
+When the socket is unavailable the data hooks fall back to polling
+(`src/hooks/use-api.ts`), so the dashboard keeps updating either way.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Deploy
 
-## How can I deploy this project?
+Vercel (root directory `community-watch-web`). See `../DEPLOYMENT.md`.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Final-year project · Department of Electrical & Electronics Engineering,
+University of Lagos.

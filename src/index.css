@@ -4,55 +4,62 @@
 
 @layer base {
   :root {
-    --background: 220 20% 7%;
+    --background: 220 24% 6%;
     --foreground: 210 20% 92%;
 
-    --card: 220 18% 10%;
+    --card: 220 20% 9%;
     --card-foreground: 210 20% 92%;
 
-    --popover: 220 18% 10%;
+    --popover: 220 20% 9%;
     --popover-foreground: 210 20% 92%;
 
     --primary: 185 72% 48%;
     --primary-foreground: 220 20% 7%;
 
-    --secondary: 220 16% 16%;
+    --secondary: 220 16% 15%;
     --secondary-foreground: 210 20% 85%;
 
-    --muted: 220 14% 14%;
-    --muted-foreground: 215 12% 55%;
+    --muted: 220 14% 13%;
+    --muted-foreground: 215 14% 58%;
 
     --accent: 185 72% 48%;
     --accent-foreground: 220 20% 7%;
 
-    --destructive: 0 72% 55%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --warning: 38 92% 55%;
-    --warning-foreground: 220 20% 7%;
-
-    --safe: 152 60% 45%;
+    /* Four-level flood classification palette (report 3.3.4) */
+    --safe: 152 58% 45%;
     --safe-foreground: 220 20% 7%;
 
-    --danger: 0 72% 55%;
+    --watch: 45 96% 56%;
+    --watch-foreground: 220 24% 6%;
+
+    --warning: 28 95% 55%;
+    --warning-foreground: 220 24% 6%;
+
+    --emergency: 0 84% 60%;
+    --emergency-foreground: 210 40% 98%;
+
+    --danger: 0 84% 60%;
     --danger-foreground: 210 40% 98%;
 
     --water: 195 85% 55%;
-    --rain: 210 75% 60%;
+    --rain: 210 80% 62%;
 
-    --border: 220 14% 18%;
-    --input: 220 14% 18%;
+    --border: 220 14% 17%;
+    --input: 220 14% 17%;
     --ring: 185 72% 48%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 220 18% 10%;
-    --sidebar-foreground: 210 20% 85%;
+    --sidebar-background: 220 22% 8%;
+    --sidebar-foreground: 210 18% 78%;
     --sidebar-primary: 185 72% 48%;
     --sidebar-primary-foreground: 220 20% 7%;
-    --sidebar-accent: 220 14% 14%;
-    --sidebar-accent-foreground: 210 20% 85%;
-    --sidebar-border: 220 14% 18%;
+    --sidebar-accent: 220 14% 13%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 220 14% 15%;
     --sidebar-ring: 185 72% 48%;
   }
 }
@@ -66,22 +73,61 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
+  /* Subtle custom scrollbars for the dark theme */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(220 14% 20%);
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(220 14% 28%);
+  }
 }
 
 @layer utilities {
   .glow-primary {
     box-shadow: 0 0 20px -4px hsl(185 72% 48% / 0.3);
   }
+  .glow-safe {
+    box-shadow: 0 0 20px -5px hsl(var(--safe) / 0.35);
+  }
+  .glow-watch {
+    box-shadow: 0 0 20px -5px hsl(var(--watch) / 0.4);
+  }
   .glow-warning {
-    box-shadow: 0 0 20px -4px hsl(38 92% 55% / 0.35);
+    box-shadow: 0 0 22px -5px hsl(var(--warning) / 0.45);
+  }
+  .glow-emergency {
+    box-shadow: 0 0 26px -4px hsl(var(--emergency) / 0.55);
   }
   .glow-danger {
-    box-shadow: 0 0 24px -4px hsl(0 72% 55% / 0.4);
-  }
-  .glow-safe {
-    box-shadow: 0 0 20px -4px hsl(152 60% 45% / 0.3);
+    box-shadow: 0 0 24px -4px hsl(var(--emergency) / 0.5);
   }
   .text-mono {
     font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
   }
+  .bg-grid {
+    background-image:
+      linear-gradient(hsl(220 14% 17% / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(220 14% 17% / 0.5) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
+
+@layer components {
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
 }

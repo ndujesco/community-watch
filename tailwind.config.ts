@@ -47,13 +47,21 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        safe: {
+          DEFAULT: "hsl(var(--safe))",
+          foreground: "hsl(var(--safe-foreground))",
+        },
+        watch: {
+          DEFAULT: "hsl(var(--watch))",
+          foreground: "hsl(var(--watch-foreground))",
+        },
         warning: {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
-        safe: {
-          DEFAULT: "hsl(var(--safe))",
-          foreground: "hsl(var(--safe-foreground))",
+        emergency: {
+          DEFAULT: "hsl(var(--emergency))",
+          foreground: "hsl(var(--emergency-foreground))",
         },
         danger: {
           DEFAULT: "hsl(var(--danger))",
