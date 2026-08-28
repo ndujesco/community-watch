@@ -14,7 +14,7 @@ export default function Stations() {
     <div>
       <PageHeader
         title="Sensor Stations"
-        description="Co-located rain-gauge and ultrasonic water-level nodes transmitting over the 433 MHz RF link. Each node reports water level, rainfall, battery, and link quality."
+        description="Co-located rain-intensity and ultrasonic water-level nodes reporting over WiFi. Each node reports water level, rainfall, battery, and signal strength."
         actions={
           data && (
             <span className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">

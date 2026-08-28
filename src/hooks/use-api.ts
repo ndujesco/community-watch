@@ -160,3 +160,20 @@ export function useUpdateSite() {
     },
   });
 }
+
+export function useUpdateStation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      stationId,
+      body,
+    }: {
+      stationId: string;
+      body: Parameters<typeof api.updateStation>[1];
+    }) => api.updateStation(stationId, body),
+    onSuccess: (_data, { stationId }) => {
+      qc.invalidateQueries({ queryKey: ["station", stationId] });
+      qc.invalidateQueries({ queryKey: ["stations"] });
+    },
+  });
+}

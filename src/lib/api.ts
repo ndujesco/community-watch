@@ -54,6 +54,14 @@ export const api = {
     request<Station[]>(`/api/stations${qs({ site_id: siteId })}`),
   station: (stationId: string) =>
     request<Station>(`/api/stations/${stationId}`),
+  updateStation: (
+    stationId: string,
+    body: Partial<Pick<Station, "name" | "site_id" | "location" | "lat" | "lng" | "status">>,
+  ) =>
+    request<Station>(`/api/stations/${stationId}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    }),
 
   latest: (params: { station_id?: string; site_id?: string } = {}) =>
     request<Reading[]>(`/api/readings/latest${qs(params)}`),

@@ -11,7 +11,7 @@ WebSocket (with automatic polling fallback).
 | Route | Purpose |
 |-------|---------|
 | `/` | Live dashboard — network status, per-site risk, focused-site metrics & charts |
-| `/stations` · `/stations/:id` | Station fleet health, battery, RF link; per-node detail & charts |
+| `/stations` · `/stations/:id` | Station fleet health, battery, WiFi signal; per-node detail & charts |
 | `/alerts` | Filterable CAP alert log with acknowledge + CAP detail dialog |
 | `/history` | Time-range explorer: water level / rainfall / dH/dt charts + table + CSV export |
 | `/analytics` | Rainfall→dH/dt scatter, fitted α, classification mix, cross-site comparison |

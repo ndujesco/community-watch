@@ -54,6 +54,9 @@ export function StationCard({ station, delay = 0 }: { station: Station; delay?: 
       </div>
 
       <p className="text-mono mt-1 text-[10px] text-muted-foreground">{station.station_id}</p>
+      {station.site_id === "unassigned" && (
+        <p className="mt-1 text-[10px] font-medium text-watch">Not yet assigned to a site</p>
+      )}
 
       {latest ? (
         <div className="mt-3 flex items-end justify-between">
