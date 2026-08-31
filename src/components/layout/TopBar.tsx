@@ -10,7 +10,6 @@ import { useOverview } from "@/hooks/use-api";
 
 const TITLES: Record<string, string> = {
   "/": "Live Dashboard",
-  "/stations": "Sensor Stations",
   "/alerts": "Alert Log",
   "/history": "Historical Data",
   "/analytics": "Site Analytics",
@@ -34,8 +33,7 @@ export function TopBar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const { data: overview } = useOverview();
-  const title =
-    TITLES[pathname] ?? (pathname.startsWith("/stations") ? "Station Detail" : "FloodWatch");
+  const title = TITLES[pathname] ?? "FloodWatch";
 
   return (
     <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-border bg-background/85 px-4 py-3 backdrop-blur sm:px-6">
@@ -56,7 +54,7 @@ export function TopBar() {
         <Clock />
         {overview && (
           <span className="hidden items-center gap-1.5 md:flex">
-            <span className="text-[11px] text-muted-foreground">Network:</span>
+            <span className="text-[11px] text-muted-foreground">Status:</span>
             <RiskBadge level={overview.overall_classification} size="sm" pulse />
           </span>
         )}

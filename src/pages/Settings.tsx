@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Save, Trash2, UserPlus, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/PageHeader";
-import { SiteSelect } from "@/components/SiteSelect";
 import { RiskBadge } from "@/components/RiskBadge";
 import { LoadingState } from "@/components/states";
 import { Button } from "@/components/ui/button";
@@ -26,21 +25,18 @@ import type { Classification, Site } from "@/lib/types";
 
 export default function Settings() {
   const sites = useSites();
-  const [site, setSite] = useState<string>();
-  useEffect(() => {
-    if (!site && sites.data?.length) setSite(sites.data[0].site_id);
-  }, [sites.data, site]);
-  const selected = sites.data?.find((s) => s.site_id === site);
+  const site = sites.data?.[0]?.site_id;
+  const selected = sites.data?.[0];
 
   return (
     <div>
       <PageHeader
         title="Settings"
-        description="Calibrate the site-specific flood thresholds and manage the community alert subscribers who receive SMS / push notifications."
+        description="Calibrate the demo site's flood thresholds and manage the alert subscribers who'd receive SMS / push notifications in a real deployment."
       />
       <div className="grid gap-6 lg:grid-cols-2">
-        <SiteConfig key={site} site={site} selected={selected} sites={sites.data} onSelect={setSite} />
-        <Subscribers sites={sites.data} />
+        <SiteConfig key={site} site={site} selected={selected} />
+        <Subscribers />
       </div>
     </div>
   );
@@ -49,13 +45,9 @@ export default function Settings() {
 function SiteConfig({
   site,
   selected,
-  sites,
-  onSelect,
 }: {
   site?: string;
   selected?: Site;
-  sites: Site[] | undefined;
-  onSelect: (s: string) => void;
 }) {
   const update = useUpdateSite();
   const [depth, setDepth] = useState("");
@@ -103,7 +95,7 @@ function SiteConfig({
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Site Configuration
         </h3>
-        <SiteSelect sites={sites} value={site} onChange={onSelect} className="w-[180px]" />
+        {selected && <span className="text-xs text-muted-foreground">{selected.name}</span>}
       </div>
 
       {!selected ? (
@@ -142,13 +134,12 @@ function SiteConfig({
   );
 }
 
-function Subscribers({ sites }: { sites: Site[] | undefined }) {
+function Subscribers() {
   const subs = useSubscribers();
   const add = useAddSubscriber();
   const del = useDeleteSubscriber();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [siteId, setSiteId] = useState("all");
   const [level, setLevel] = useState<Classification>("warning");
 
   const submit = () => {
@@ -157,7 +148,7 @@ function Subscribers({ sites }: { sites: Site[] | undefined }) {
       return;
     }
     add.mutate(
-      { name, phone, site_id: siteId === "all" ? null : siteId, min_level: level },
+      { name, phone, site_id: null, min_level: level },
       {
         onSuccess: () => {
           toast.success("Subscriber added");
@@ -190,9 +181,6 @@ function Subscribers({ sites }: { sites: Site[] | undefined }) {
               <p className="truncate text-sm text-foreground">{s.name}</p>
               <p className="text-mono text-[11px] text-muted-foreground">{s.phone}</p>
             </div>
-            <span className="text-[11px] text-muted-foreground">
-              {sites?.find((x) => x.site_id === s.site_id)?.name ?? "All sites"}
-            </span>
             <RiskBadge level={s.min_level} size="sm" showIcon={false} />
             <Button
               variant="ghost"
@@ -213,31 +201,16 @@ function Subscribers({ sites }: { sites: Site[] | undefined }) {
           <Input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
           <Input placeholder="+234…" value={phone} onChange={(e) => setPhone(e.target.value)} />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Select value={siteId} onValueChange={setSiteId}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All sites</SelectItem>
-              {sites?.map((s) => (
-                <SelectItem key={s.site_id} value={s.site_id}>
-                  {s.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={level} onValueChange={(v) => setLevel(v as Classification)}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="watch">Watch &amp; above</SelectItem>
-              <SelectItem value="warning">Warning &amp; above</SelectItem>
-              <SelectItem value="emergency">Emergency only</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <Select value={level} onValueChange={(v) => setLevel(v as Classification)}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="watch">Watch &amp; above</SelectItem>
+            <SelectItem value="warning">Warning &amp; above</SelectItem>
+            <SelectItem value="emergency">Emergency only</SelectItem>
+          </SelectContent>
+        </Select>
         <Button onClick={submit} disabled={add.isPending} variant="outline" className="w-full">
           <UserPlus className="mr-1.5 h-4 w-4" /> Add subscriber
         </Button>

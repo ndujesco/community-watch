@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
-  RadioTower,
   Bell,
   History,
   TrendingUp,
@@ -13,7 +12,6 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/stations", label: "Stations", icon: RadioTower },
   { to: "/alerts", label: "Alerts", icon: Bell },
   { to: "/history", label: "History", icon: History },
   { to: "/analytics", label: "Analytics", icon: TrendingUp },

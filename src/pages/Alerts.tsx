@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Bell } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { RiskBadge } from "@/components/RiskBadge";
-import { SiteSelect } from "@/components/SiteSelect";
 import { LoadingState, ErrorState, EmptyState } from "@/components/states";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -19,19 +18,16 @@ import {
 } from "@/components/ui/dialog";
 import { meta } from "@/lib/flood";
 import { fmtDateTime, fmtTFlood } from "@/lib/format";
-import { useAckAlert, useAlerts, useSites } from "@/hooks/use-api";
+import { useAckAlert, useAlerts } from "@/hooks/use-api";
 import type { Alert } from "@/lib/types";
 
 export default function Alerts() {
   const [level, setLevel] = useState<string>("all");
-  const [site, setSite] = useState<string>("all");
   const [activeOnly, setActiveOnly] = useState(false);
   const [detail, setDetail] = useState<Alert | null>(null);
 
-  const sites = useSites();
   const { data, isLoading, error } = useAlerts({
     level: level === "all" ? undefined : level,
-    site_id: site === "all" ? undefined : site,
     acknowledged: activeOnly ? false : undefined,
     limit: 300,
   });
@@ -53,7 +49,6 @@ export default function Alerts() {
             <TabsTrigger value="emergency">Emergency</TabsTrigger>
           </TabsList>
         </Tabs>
-        <SiteSelect sites={sites.data} value={site} onChange={setSite} includeAll className="w-[200px]" />
         <label className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
           <Switch checked={activeOnly} onCheckedChange={setActiveOnly} />
           Active (unacknowledged) only

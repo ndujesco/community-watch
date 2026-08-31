@@ -1,18 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Shield, Eye, AlertTriangle, AlertOctagon, MapPin, Waves, Clock } from "lucide-react";
+import { Shield, Eye, AlertTriangle, AlertOctagon, MapPin, Waves, Clock, FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { fmtRelative, fmtTFlood } from "@/lib/format";
 import { ConnectionBadge } from "@/components/ConnectionBadge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useOverview } from "@/hooks/use-api";
-import type { Classification, SiteState } from "@/lib/types";
+import type { Classification } from "@/lib/types";
 
 // Plain-language presentation for each risk level — no technical terms.
 const LOOK: Record<
@@ -62,44 +54,15 @@ const LOOK: Record<
   },
 };
 
-const STORAGE_KEY = "floodwatch:area";
-
 export default function PublicStatus() {
   const { data, isLoading } = useOverview();
-  const [area, setArea] = useState<string>("network");
 
-  // Remember the resident's chosen area between visits.
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) setArea(saved);
-  }, []);
-  const pick = (v: string) => {
-    setArea(v);
-    localStorage.setItem(STORAGE_KEY, v);
-  };
-
-  const sites = data?.sites ?? [];
-  const selectedSite: SiteState | undefined =
-    area === "network" ? undefined : sites.find((s) => s.site_id === area);
-
-  const level: Classification =
-    selectedSite?.classification ?? data?.overall_classification ?? "safe";
+  const site = data?.sites?.[0];
+  const level: Classification = site?.classification ?? data?.overall_classification ?? "safe";
   const look = LOOK[level];
   const Icon = look.icon;
-
-  const locationLabel = useMemo(() => {
-    if (selectedSite) return selectedSite.name;
-    return "Across all monitored areas";
-  }, [selectedSite]);
-
-  const tflood =
-    selectedSite?.tflood ??
-    (area === "network"
-      ? sites
-          .filter((s) => s.classification === level && s.tflood != null)
-          .map((s) => s.tflood!)
-          .sort((a, b) => a - b)[0] ?? null
-      : null);
+  const locationLabel = site?.name ?? "FloodWatch Demo Site";
+  const tflood = site?.tflood ?? null;
 
   return (
     <div className={cn("flex min-h-screen flex-col transition-colors duration-500", look.bg)}>
@@ -152,23 +115,10 @@ export default function PublicStatus() {
           </p>
         )}
 
-        {/* Area picker */}
-        <div className="mt-10 w-full max-w-xs">
-          <p className="mb-2 text-sm font-medium opacity-90">Check your area</p>
-          <Select value={area} onValueChange={pick}>
-            <SelectTrigger className="h-12 border-black/20 bg-black/10 text-base font-medium backdrop-blur">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="network">All monitored areas</SelectItem>
-              {sites.map((s) => (
-                <SelectItem key={s.site_id} value={s.site_id}>
-                  {s.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <p className="mt-10 inline-flex max-w-sm items-center gap-2 rounded-full bg-black/10 px-4 py-2 text-xs font-medium opacity-90">
+          <FlaskConical className="h-3.5 w-3.5 shrink-0" />
+          Live hardware demo — one real sensor node, not a citywide network.
+        </p>
       </div>
 
       {/* Footer */}
@@ -176,7 +126,7 @@ export default function PublicStatus() {
         {isLoading ? (
           "Checking conditions…"
         ) : (
-          <>Updated {fmtRelative(selectedSite?.ts ?? data?.now)} · updates automatically</>
+          <>Updated {fmtRelative(site?.ts ?? data?.now)} · updates automatically</>
         )}
       </div>
     </div>

@@ -39,7 +39,6 @@ export interface Reading {
   rainfall_rate: number;
   cumulative_rain: number;
   temperature: number;
-  pressure: number;
   humidity: number;
   dhdt: number;
   tflood: number | null;
@@ -53,7 +52,7 @@ export interface Reading {
 export interface SensorHealth {
   rain_gauge: boolean;
   ultrasonic: boolean;
-  bmp280: boolean;
+  climate: boolean;
   float_switch: boolean;
 }
 
@@ -66,8 +65,6 @@ export interface Station {
   lat: number;
   lng: number;
   status: StationStatus;
-  battery: number;
-  solar_voltage: number;
   rssi: number;
   firmware: string;
   sensors: SensorHealth;

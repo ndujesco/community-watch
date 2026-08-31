@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Download } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
-import { SiteSelect } from "@/components/SiteSelect";
 import { RiskBadge } from "@/components/RiskBadge";
 import { WaterLevelChart } from "@/components/charts/WaterLevelChart";
 import { RainfallChart } from "@/components/charts/RainfallChart";
@@ -36,7 +35,7 @@ export default function History() {
     if (!table.data?.length) return;
     const cols = [
       "ts", "water_level", "rainfall_rate", "cumulative_rain", "dhdt",
-      "tflood", "capacity_pct", "classification", "temperature", "pressure", "humidity",
+      "tflood", "capacity_pct", "classification", "temperature", "humidity",
     ];
     const rows = table.data.map((r) =>
       cols.map((c) => (r as unknown as Record<string, unknown>)[c] ?? "").join(","),
@@ -55,7 +54,7 @@ export default function History() {
     <div>
       <PageHeader
         title="Historical Data"
-        description="Explore recorded sensor readings, derived rate-of-rise (dH/dt), and flood classification over time for any monitored site."
+        description="Recorded sensor readings, derived rate-of-rise (dH/dt), and flood classification over time from the demo sensor node."
         actions={
           <Button variant="outline" size="sm" onClick={exportCsv} disabled={!table.data?.length}>
             <Download className="mr-1.5 h-3.5 w-3.5" /> Export CSV
@@ -64,7 +63,6 @@ export default function History() {
       />
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
-        <SiteSelect sites={sites.data} value={site} onChange={setSite} />
         <Tabs value={String(hours)} onValueChange={(v) => setHours(Number(v))}>
           <TabsList>
             {RANGES.map((r) => (

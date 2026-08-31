@@ -41,16 +41,6 @@ export function useStations(siteId?: string) {
   });
 }
 
-export function useStation(stationId?: string) {
-  const refetchInterval = useLivePoll(true);
-  return useQuery({
-    queryKey: ["station", stationId],
-    queryFn: () => api.station(stationId!),
-    enabled: !!stationId,
-    refetchInterval,
-  });
-}
-
 export function useLatest(params: { station_id?: string; site_id?: string } = {}) {
   const refetchInterval = useLivePoll(true);
   return useQuery({
@@ -70,6 +60,7 @@ export function useTimeseries(params: {
   return useQuery({
     queryKey: ["timeseries", params],
     queryFn: () => api.timeseries(params),
+    enabled: !!(params.station_id || params.site_id),
     refetchInterval,
   });
 }
@@ -161,19 +152,3 @@ export function useUpdateSite() {
   });
 }
 
-export function useUpdateStation() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      stationId,
-      body,
-    }: {
-      stationId: string;
-      body: Parameters<typeof api.updateStation>[1];
-    }) => api.updateStation(stationId, body),
-    onSuccess: (_data, { stationId }) => {
-      qc.invalidateQueries({ queryKey: ["station", stationId] });
-      qc.invalidateQueries({ queryKey: ["stations"] });
-    },
-  });
-}
