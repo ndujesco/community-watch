@@ -140,7 +140,6 @@ function Subscribers() {
   const del = useDeleteSubscriber();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [level, setLevel] = useState<Classification>("warning");
 
   const submit = () => {
@@ -149,13 +148,12 @@ function Subscribers() {
       return;
     }
     add.mutate(
-      { name, email, phone: phone || null, site_id: null, min_level: level },
+      { name, email, site_id: null, min_level: level },
       {
         onSuccess: () => {
           toast.success("Subscriber added");
           setName("");
           setEmail("");
-          setPhone("");
         },
         onError: (e) => toast.error(e instanceof Error ? e.message : "Failed to add"),
       },
@@ -181,9 +179,7 @@ function Subscribers() {
             <Mail className="h-4 w-4 text-muted-foreground" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-foreground">{s.name}</p>
-              <p className="text-mono text-[11px] text-muted-foreground">
-                {s.email}{s.phone && ` · ${s.phone}`}
-              </p>
+              <p className="text-mono text-[11px] text-muted-foreground">{s.email}</p>
             </div>
             <RiskBadge level={s.min_level} size="sm" showIcon={false} />
             <Button
@@ -210,11 +206,6 @@ function Subscribers() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <Input
-          placeholder="+234… (optional — also get SMS)"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
         <Select value={level} onValueChange={(v) => setLevel(v as Classification)}>
           <SelectTrigger>
             <SelectValue />

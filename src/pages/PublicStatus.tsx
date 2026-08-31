@@ -141,7 +141,6 @@ function SubscribeForm({ look }: { look: (typeof LOOK)[Classification] }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [done, setDone] = useState(false);
   const add = useAddSubscriber();
 
@@ -152,7 +151,7 @@ function SubscribeForm({ look }: { look: (typeof LOOK)[Classification] }) {
       return;
     }
     add.mutate(
-      { name: name || email, email, phone: phone || null, site_id: null, min_level: "warning" },
+      { name: name || email, email, site_id: null, min_level: "warning" },
       {
         onSuccess: () => setDone(true),
         onError: (err) =>
@@ -169,8 +168,8 @@ function SubscribeForm({ look }: { look: (typeof LOOK)[Classification] }) {
           look.chip,
         )}
       >
-        <Check className="h-3.5 w-3.5" /> Subscribed — you'll get an email
-        {phone ? " and SMS" : ""} on Warning and Emergency alerts.
+        <Check className="h-3.5 w-3.5" /> Subscribed — you'll get an email on Warning and
+        Emergency alerts.
       </p>
     );
   }
@@ -205,13 +204,6 @@ function SubscribeForm({ look }: { look: (typeof LOOK)[Classification] }) {
         placeholder="you@example.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="rounded-lg border border-black/20 bg-black/10 px-3 py-2 text-sm placeholder:opacity-60 focus:outline-none"
-      />
-      <input
-        type="tel"
-        placeholder="+234… (optional — also get SMS)"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
         className="rounded-lg border border-black/20 bg-black/10 px-3 py-2 text-sm placeholder:opacity-60 focus:outline-none"
       />
       <button
