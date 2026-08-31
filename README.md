@@ -1,4 +1,4 @@
-# FloodWatch Web — IoT Flood Early-Warning Dashboard
+# FloodWatch Web: IoT Flood Early-Warning Dashboard
 
 React + TypeScript + Vite dashboard for the IoT Flood Early-Warning System.
 Visualises real-time sensor readings, site-specific flood risk, time-to-flood
@@ -11,14 +11,14 @@ WebSocket (with automatic polling fallback).
 Short end-to-end walkthrough: live hardware node → dashboard → alerting.
 
 <video src="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4" controls width="700">
-  Your viewer doesn't support inline video — <a href="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4">download the clip directly</a>.
+  Your viewer doesn't support inline video: <a href="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4">download the clip directly</a>.
 </video>
 
 ## Pages
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Live dashboard — network status, per-site risk, focused-site metrics & charts |
+| `/` | Live dashboard: network status, per-site risk, focused-site metrics & charts |
 | `/stations` · `/stations/:id` | Station fleet health, battery, WiFi signal; per-node detail & charts |
 | `/alerts` | Filterable CAP alert log with acknowledge + CAP detail dialog |
 | `/history` | Time-range explorer: water level / rainfall / dH/dt charts + table + CSV export |
