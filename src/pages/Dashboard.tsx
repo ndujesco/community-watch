@@ -24,7 +24,7 @@ import { fmtNum, fmtRelative, fmtTFlood, rssiQuality } from "@/lib/format";
 import { useSite, useStations, useTimeseries } from "@/hooks/use-api";
 
 const SENSOR_LABELS: Record<string, string> = {
-  rain_gauge: "Analog rain-intensity sensor (YL-83 / FC-37)",
+  rain_gauge: "MH-RD raindrops sensor",
   ultrasonic: "Ultrasonic water-level sensor (AJ-SR04M)",
   climate: "Climate sensor — temperature & humidity (DHT11)",
   float_switch: "Float switches (redundant high-water cutoff)",
