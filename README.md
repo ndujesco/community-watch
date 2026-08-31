@@ -6,6 +6,14 @@ projections, historical trends, the rainfall→water-level relationship, station
 health, and the CAP alert log. Talks to the FastAPI backend over REST and a
 WebSocket (with automatic polling fallback).
 
+## Demo
+
+Short end-to-end walkthrough: live hardware node → dashboard → alerting.
+
+<video src="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4" controls width="700">
+  Your viewer doesn't support inline video — <a href="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4">download the clip directly</a>.
+</video>
+
 ## Pages
 
 | Route | Purpose |
