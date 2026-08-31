@@ -3,7 +3,7 @@ import { meta } from "@/lib/flood";
 import { fmtDateTime, fmtTFlood } from "@/lib/format";
 import { RiskBadge } from "./RiskBadge";
 import { Button } from "@/components/ui/button";
-import { Check, MessageSquare, Smartphone } from "lucide-react";
+import { Check, Mail } from "lucide-react";
 import type { Alert } from "@/lib/types";
 
 interface Props {
@@ -47,8 +47,7 @@ export function AlertItem({ alert, onAck, compact }: Props) {
               </span>
             )}
             <span className="flex items-center gap-2">
-              {alert.channels.includes("sms") && <Smartphone className="h-3 w-3" />}
-              {alert.channels.includes("push") && <MessageSquare className="h-3 w-3" />}
+              {alert.channels.includes("email") && <Mail className="h-3 w-3" />}
             </span>
             {alert.acknowledged ? (
               <span className="flex items-center gap-1 text-safe">

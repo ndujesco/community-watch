@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Save, Trash2, UserPlus, Smartphone } from "lucide-react";
+import { Save, Trash2, UserPlus, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/PageHeader";
 import { RiskBadge } from "@/components/RiskBadge";
@@ -32,7 +32,7 @@ export default function Settings() {
     <div>
       <PageHeader
         title="Settings"
-        description="Calibrate the demo site's flood thresholds and manage the alert subscribers who'd receive SMS / push notifications in a real deployment."
+        description="Calibrate the demo site's flood thresholds and manage the alert subscribers who receive email alerts on Warning and Emergency."
       />
       <div className="grid gap-6 lg:grid-cols-2">
         <SiteConfig key={site} site={site} selected={selected} />
@@ -139,20 +139,22 @@ function Subscribers() {
   const add = useAddSubscriber();
   const del = useDeleteSubscriber();
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [level, setLevel] = useState<Classification>("warning");
 
   const submit = () => {
-    if (!name || !phone) {
-      toast.error("Name and phone are required");
+    if (!name || !email) {
+      toast.error("Name and email are required");
       return;
     }
     add.mutate(
-      { name, phone, site_id: null, min_level: level },
+      { name, email, phone: phone || null, site_id: null, min_level: level },
       {
         onSuccess: () => {
           toast.success("Subscriber added");
           setName("");
+          setEmail("");
           setPhone("");
         },
         onError: (e) => toast.error(e instanceof Error ? e.message : "Failed to add"),
@@ -176,10 +178,12 @@ function Subscribers() {
             key={s.subscriber_id}
             className="flex items-center gap-3 rounded-lg border border-border bg-secondary/30 px-3 py-2"
           >
-            <Smartphone className="h-4 w-4 text-muted-foreground" />
+            <Mail className="h-4 w-4 text-muted-foreground" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-foreground">{s.name}</p>
-              <p className="text-mono text-[11px] text-muted-foreground">{s.phone}</p>
+              <p className="text-mono text-[11px] text-muted-foreground">
+                {s.email}{s.phone && ` · ${s.phone}`}
+              </p>
             </div>
             <RiskBadge level={s.min_level} size="sm" showIcon={false} />
             <Button
@@ -199,8 +203,18 @@ function Subscribers() {
       <div className="mt-4 space-y-3 border-t border-border pt-4">
         <div className="grid grid-cols-2 gap-3">
           <Input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-          <Input placeholder="+234…" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <Input
+            placeholder="you@example.com"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
+        <Input
+          placeholder="+234… (optional — also get SMS)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
         <Select value={level} onValueChange={(v) => setLevel(v as Classification)}>
           <SelectTrigger>
             <SelectValue />

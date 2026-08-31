@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Shield, Eye, AlertTriangle, AlertOctagon, MapPin, Waves, Clock, FlaskConical } from "lucide-react";
+import { toast } from "sonner";
+import { Shield, Eye, AlertTriangle, AlertOctagon, MapPin, Waves, Clock, FlaskConical, Mail, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { fmtRelative, fmtTFlood } from "@/lib/format";
 import { ConnectionBadge } from "@/components/ConnectionBadge";
-import { useOverview } from "@/hooks/use-api";
+import { useAddSubscriber, useOverview } from "@/hooks/use-api";
 import type { Classification } from "@/lib/types";
 
 // Plain-language presentation for each risk level — no technical terms.
@@ -119,6 +121,8 @@ export default function PublicStatus() {
           <FlaskConical className="h-3.5 w-3.5 shrink-0" />
           Live hardware demo — one real sensor node, not a citywide network.
         </p>
+
+        <SubscribeForm look={look} />
       </div>
 
       {/* Footer */}
@@ -130,5 +134,96 @@ export default function PublicStatus() {
         )}
       </div>
     </div>
+  );
+}
+
+function SubscribeForm({ look }: { look: (typeof LOOK)[Classification] }) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [done, setDone] = useState(false);
+  const add = useAddSubscriber();
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Enter an email address");
+      return;
+    }
+    add.mutate(
+      { name: name || email, email, phone: phone || null, site_id: null, min_level: "warning" },
+      {
+        onSuccess: () => setDone(true),
+        onError: (err) =>
+          toast.error(err instanceof Error ? err.message : "Could not subscribe"),
+      },
+    );
+  };
+
+  if (done) {
+    return (
+      <p
+        className={cn(
+          "mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium",
+          look.chip,
+        )}
+      >
+        <Check className="h-3.5 w-3.5" /> Subscribed — you'll get an email
+        {phone ? " and SMS" : ""} on Warning and Emergency alerts.
+      </p>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className={cn(
+          "mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold underline-offset-2 hover:underline",
+          look.chip,
+        )}
+      >
+        <Mail className="h-3.5 w-3.5" /> Subscribe for email alerts
+      </button>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-4 flex w-full max-w-xs flex-col gap-2">
+      <input
+        autoFocus
+        type="text"
+        placeholder="Name (optional)"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="rounded-lg border border-black/20 bg-black/10 px-3 py-2 text-sm placeholder:opacity-60 focus:outline-none"
+      />
+      <input
+        type="email"
+        required
+        placeholder="you@example.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="rounded-lg border border-black/20 bg-black/10 px-3 py-2 text-sm placeholder:opacity-60 focus:outline-none"
+      />
+      <input
+        type="tel"
+        placeholder="+234… (optional — also get SMS)"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        className="rounded-lg border border-black/20 bg-black/10 px-3 py-2 text-sm placeholder:opacity-60 focus:outline-none"
+      />
+      <button
+        type="submit"
+        disabled={add.isPending}
+        className={cn(
+          "rounded-lg px-3 py-2 text-sm font-semibold",
+          look.chip,
+        )}
+      >
+        {add.isPending ? "Subscribing…" : "Subscribe"}
+      </button>
+    </form>
   );
 }

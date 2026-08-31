@@ -172,7 +172,8 @@ export interface Subscriber {
   id: string;
   subscriber_id: string;
   name: string;
-  phone: string;
+  email: string;
+  phone?: string | null;
   site_id: string | null;
   min_level: Classification;
   active: boolean;

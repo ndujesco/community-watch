@@ -103,7 +103,8 @@ export const api = {
     request<Subscriber[]>(`/api/subscribers${qs({ site_id: siteId })}`),
   addSubscriber: (body: {
     name: string;
-    phone: string;
+    email: string;
+    phone?: string | null;
     site_id?: string | null;
     min_level?: string;
   }) =>
