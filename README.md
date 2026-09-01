@@ -1,3 +1,7 @@
+
+
+Uploading floodwatch-demo.mp4…
+
 # FloodWatch Web: IoT Flood Early-Warning Dashboard
 
 React + TypeScript + Vite dashboard for the IoT Flood Early-Warning System.
@@ -10,9 +14,7 @@ WebSocket (with automatic polling fallback).
 
 Short end-to-end walkthrough: live hardware node → dashboard → alerting.
 
-<video src="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4" controls width="700">
-  Your viewer doesn't support inline video: <a href="https://raw.githubusercontent.com/ndujesco/community-watch/main/docs/demo.mp4">download the clip directly</a>.
-</video>
+
 
 ## Pages
 
